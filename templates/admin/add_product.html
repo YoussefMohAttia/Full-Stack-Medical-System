@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Add Medicine to Catalogue</h2>
+    <form method="POST" onsubmit="return validateForm()">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <div class="form-group">
+            <label>Reference ID</label>
+            <input type="text" name="product_id" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Medicine name</label>
+            <input type="text" name="product_name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Pack size / strength</label>
+            <input type="number" name="pack_size" class="form-control" min="1" max="100000" required>
+            <small class="text-muted">Use a whole-number pack size or strength reference.</small>
+        </div>
+        <div class="form-group">
+            <label>Listed price</label>
+            <input type="number" step="0.01" name="unit_price" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Medicine</button>
+    </form>
+</div>
+
+<script>
+function validateForm() {
+    const pack_size = document.querySelector('input[name="pack_size"]').value;
+    if (pack_size < 1 || pack_size > 100000) {
+        alert('Please enter a valid pack size between 1 and 100000');
+        return false;
+    }
+    return true;
+}
+</script>
+{% endblock %}

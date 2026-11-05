@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Reservation reports | XPharma{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="h2 mb-4">Reservation reports</h1>
+  <form method="GET" class="card card-body mb-4"><div class="row g-3 align-items-end">
+    <div class="col-md-3"><label class="form-label" for="start_date">Start date</label><input id="start_date" type="date" name="start_date" class="form-control" value="{{ request.args.get('start_date', default_start_date) }}" required></div>
+    <div class="col-md-3"><label class="form-label" for="end_date">End date</label><input id="end_date" type="date" name="end_date" class="form-control" value="{{ request.args.get('end_date', default_end_date) }}" required></div>
+    <div class="col-md-3"><label class="form-label" for="product_id">Product reference</label><input id="product_id" name="product_id" class="form-control" value="{{ request.args.get('product_id', '') }}"></div>
+    <div class="col-md-3"><button class="btn btn-primary w-100">Show reservations</button></div>
+  </div></form>
+  <div class="card"><div class="card-body"><h2 class="h5 mb-3">Reservations ({{ reservations|length }})</h2>
+  {% if reservations %}<div class="table-responsive"><table class="table align-middle"><thead><tr><th>Order</th><th>Customer</th><th>Product</th><th>Collection</th><th>Quantity</th><th>Payment</th><th>Status</th><th>Total</th><th>Proof</th></tr></thead><tbody>
+  {% for res in reservations %}<tr><td>{{ res.reservation_id }}</td><td>{{ res.fname }} {{ res.lname }}<br><small>{{ res.email }}<br>{{ res.phone }}</small></td><td>{{ res.product_name }}<br><small>{{ res.product_id }}</small></td><td>{{ res.pickup_date|date_display }}</td><td>{{ res.quantity }}</td><td>{{ res.payment_method }}<br><small>{{ res.payment_status|replace('_', ' ') }}</small></td><td>{{ res.status }}</td><td>EGP {{ '%.2f'|format(res.price) }}</td><td>{% if res.payment_proof %}<a href="{{ url_for('admin_payment_proof', reservation_id=res.reservation_id) }}">Download proof</a>{% else %}—{% endif %}</td></tr>{% endfor %}
+  </tbody></table></div>{% else %}<p class="text-secondary mb-0">No reservations found for the selected period.</p>{% endif %}
+  </div></div>
+</div>
+{% endblock %}

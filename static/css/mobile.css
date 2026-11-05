@@ -1,0 +1,72 @@
+/* Small-screen adjustments shared by customer and admin pages. */
+body.dark .payment-option { border-color: #456373; }
+body.dark .payment-option:has(input:checked) { background: #173c48; border-color: #80d8cd; }
+body.dark .payment-option span { color: #b7c9d0; }
+body.dark .instapay-account { color: #80d8cd; }
+
+@media (max-width: 991.98px) {
+  .navbar > .container { flex-wrap: wrap; }
+  .navbar-toggler { min-width: 44px; min-height: 44px; padding: .4rem; }
+  body.dark .navbar-toggler { border-color: #547180; }
+  body.dark .navbar-toggler-icon { filter: invert(1); }
+  .navbar-collapse { max-height: calc(100dvh - 72px); overflow-y: auto; overscroll-behavior: contain; }
+  .navbar-nav { align-items: stretch; gap: .2rem; padding: .65rem 0 1rem; }
+  .navbar-nav .nav-link { padding: .65rem .35rem; }
+  .navbar-nav .nav-item > .btn { display: block; margin: .3rem 0; text-align: center; padding: .7rem; }
+  .navbar-nav .nav-item.d-flex { margin-top: .5rem; }
+  .utility-btn { width: 44px; height: 44px; }
+}
+
+@media (max-width: 767.98px) {
+  .page-wrap { padding-top: 68px; }
+  .hero { padding: 3rem 0 2.5rem !important; }
+  .hero h1, .about-hero h1 { font-size: clamp(2.25rem, 9vw, 3.2rem); }
+  .hero-card { padding: 1.6rem !important; border-radius: 20px !important; }
+  .hero-icon { margin-bottom: 1rem !important; }
+  .trust { margin-top: 1.5rem !important; gap: .8rem 1.2rem !important; }
+  .about-hero, .catalogue-head, .dash-head { padding: 3rem 0 2rem !important; }
+  .about-art { min-height: 220px !important; padding: 2rem !important; }
+  .filter-card.row { margin-inline: 0; }
+  .medicine-card { padding: 1.2rem !important; }
+  .medicine-product-image { height: 180px !important; }
+  .medicine-product-image img { height: 170px !important; }
+  .product-actions { font-size: .85rem; }
+  .product-actions a { min-height: 44px; }
+  #products .row > [class*="col-"] { flex: 0 0 auto; width: 50%; }
+  #products .row { --bs-gutter-x: .75rem; --bs-gutter-y: .75rem; }
+  #products .medicine-card { padding: .75rem !important; }
+  #products .medicine-product-image { height: 140px !important; }
+  #products .medicine-product-image img { height: 130px !important; }
+  #products .medicine-card h3 { font-size: .95rem; }
+  #products .product-actions { font-size: .6rem; }
+  #products .product-actions a { padding-inline: .1rem; }
+  .product-layout { gap: 1.75rem !important; }
+  .product-copy h1 { font-size: clamp(2rem, 9vw, 3rem) !important; overflow-wrap: anywhere; }
+  .product-meta { gap: 1rem 2rem !important; }
+  .formula-card, .detail-panel { padding: 1.35rem !important; }
+  .product-gallery .gallery-prev { left: 12px !important; right: auto !important; }
+  .product-gallery .gallery-next { right: 32px !important; left: auto !important; }
+  .product-gallery .gallery-arrow { width: 40px !important; height: 44px !important; font-size: .85rem !important; }
+  .card-body { min-width: 0; }
+  input, select, textarea { font-size: 16px !important; max-width: 100%; }
+  input[type="date"] { min-width: 0; width: 100%; }
+  .payment-option label, .account-card, .instapay-account { min-width: 0; overflow-wrap: anywhere; }
+  .modal-dialog { margin: .75rem; }
+  .modal-content { max-height: calc(100dvh - 1.5rem); overflow-y: auto; }
+  .instapay-qr { width: min(100%, 235px) !important; }
+  .payment-total { font-size: 1.6rem !important; }
+  footer { overflow-wrap: anywhere; }
+  .table-responsive { -webkit-overflow-scrolling: touch; }
+  .order-card { padding: 1.25rem; }
+  .order-card dl { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: .65rem 1rem; margin: 1rem 0; }
+  .order-card dt { color: var(--muted); font-weight: 500; }
+  .order-card dd { margin: 0; text-align: end; overflow-wrap: anywhere; }
+  .order-card .btn { min-height: 44px; }
+}
+
+@media (max-width: 359.98px) {
+  .container { padding-inline: 1rem; }
+  .product-actions { font-size: .78rem; }
+  .product-actions a { padding-inline: .3rem; }
+  .modal-dialog { margin: .4rem; }
+}

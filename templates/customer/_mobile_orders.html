@@ -1,0 +1,17 @@
+<div class="d-md-none">
+  {% for reservation in reservations %}
+  <article class="card order-card mb-3">
+    <div class="d-flex justify-content-between align-items-start gap-2">
+      <h2 class="h5 mb-0">{{ reservation.product_name }}</h2>
+      <span class="badge text-bg-{{ 'success' if reservation.status == 'active' else 'secondary' }}">{{ reservation.status|title }}</span>
+    </div>
+    <dl>
+      <dt data-ar="الكمية">Quantity</dt><dd><bdi>{{ reservation.quantity }}</bdi></dd>
+      <dt data-ar="الاستلام">Collection</dt><dd><bdi>{{ reservation.pickup_date|date_display }}</bdi></dd>
+      <dt data-ar="الدفع">Payment</dt><dd><span class="text-capitalize">{{ reservation.payment_method }}</span><small class="d-block text-secondary">{{ reservation.payment_status|replace('_', ' ')|title }}</small></dd>
+      <dt data-ar="الإجمالي">Total</dt><dd><span data-ar="ج.م">EGP</span> <bdi>{{ '%.2f'|format(reservation.price) }}</bdi></dd>
+    </dl>
+    {% if reservation.status == 'active' %}<form method="POST" action="{{ url_for('cancel_reservation', reservation_id=reservation.reservation_id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn btn-outline-danger w-100" onclick="return confirm('Cancel this product reservation?')" data-ar="إلغاء الحجز">Cancel reservation</button></form>{% endif %}
+  </article>
+  {% endfor %}
+</div>

@@ -1,18 +1,20 @@
-{% extends 'base.html' %}
-{% block title %}Reservation reports | XPharma{% endblock %}
+﻿{% extends 'base.html' %}
+{% block title %}Manage orders | XPharma{% endblock %}
 {% block content %}
-<div class="container py-4">
-  <h1 class="h2 mb-4">Reservation reports</h1>
+<div class="container py-5">
+  <a href="/admin/dashboard" class="text-decoration-none" data-ar="العودة إلى لوحة الإدارة">← Back to dashboard</a>
+  <h1 class="display-font h2 mt-3" data-ar="إدارة الطلبات">Manage orders</h1>
+  <p class="text-secondary" data-ar="ابحث عن الطلبات وراجع المدفوعات وحالة الاستلام.">Find reservations and review payments and collection status.</p>
   <form method="GET" class="card card-body mb-4"><div class="row g-3 align-items-end">
-    <div class="col-md-3"><label class="form-label" for="start_date">Start date</label><input id="start_date" type="date" name="start_date" class="form-control" value="{{ request.args.get('start_date', default_start_date) }}" required></div>
-    <div class="col-md-3"><label class="form-label" for="end_date">End date</label><input id="end_date" type="date" name="end_date" class="form-control" value="{{ request.args.get('end_date', default_end_date) }}" required></div>
-    <div class="col-md-3"><label class="form-label" for="product_id">Product reference</label><input id="product_id" name="product_id" class="form-control" value="{{ request.args.get('product_id', '') }}"></div>
-    <div class="col-md-3"><button class="btn btn-primary w-100">Show reservations</button></div>
+    <div class="col-md-6"><label class="form-label" for="q" data-ar="بحث">Search</label><input id="q" name="q" class="form-control" value="{{ filters.term }}" placeholder="Order number, customer or product"></div>
+    <div class="col-6 col-md-3"><label class="form-label" for="start_date" data-ar="من تاريخ الاستلام">Collection from</label><input id="start_date" type="date" name="start_date" class="form-control" value="{{ filters.start }}"></div>
+    <div class="col-6 col-md-3"><label class="form-label" for="end_date" data-ar="إلى تاريخ الاستلام">Collection to</label><input id="end_date" type="date" name="end_date" class="form-control" value="{{ filters.end }}"></div>
+    <div class="col-md-4"><label class="form-label" for="status" data-ar="حالة الطلب">Order status</label><select id="status" name="status" class="form-select"><option value="" data-ar="كل الحالات">All statuses</option>{% for key in ['active','pending_verification','rejected','completed','cancelled'] %}{% set label=lookup(order_labels,key) %}<option value="{{ key }}" {% if filters.status==key %}selected{% endif %} data-ar="{{ label[1] }}">{{ label[0] }}</option>{% endfor %}</select></div>
+    <div class="col-md-4"><label class="form-label" for="payment" data-ar="حالة الدفع">Payment status</label><select id="payment" name="payment" class="form-select"><option value="" data-ar="كل المدفوعات">All payments</option>{% for key in ['pending_verification','verified','rejected','cash_on_collection','cash_paid'] %}{% set label=lookup(payment_labels,key) %}<option value="{{ key }}" {% if filters.payment==key %}selected{% endif %} data-ar="{{ label[1] }}">{{ label[0] }}</option>{% endfor %}</select></div>
+    <div class="col-6 col-md-2"><button class="btn btn-primary w-100" data-ar="تطبيق">Apply</button></div><div class="col-6 col-md-2"><a href="/admin/reports" class="btn btn-outline-primary w-100" data-ar="مسح">Clear</a></div>
   </div></form>
-  <div class="card"><div class="card-body"><h2 class="h5 mb-3">Reservations ({{ reservations|length }})</h2>
-  {% if reservations %}<div class="table-responsive"><table class="table align-middle"><thead><tr><th>Order</th><th>Customer</th><th>Product</th><th>Collection</th><th>Quantity</th><th>Payment</th><th>Status</th><th>Total</th><th>Proof</th></tr></thead><tbody>
-  {% for res in reservations %}<tr><td>{{ res.reservation_id }}</td><td>{{ res.fname }} {{ res.lname }}<br><small>{{ res.email }}<br>{{ res.phone }}</small></td><td>{{ res.product_name }}<br><small>{{ res.product_id }}</small></td><td>{{ res.pickup_date|date_display }}</td><td>{{ res.quantity }}</td><td>{{ res.payment_method }}<br><small>{{ res.payment_status|replace('_', ' ') }}</small></td><td>{{ res.status }}</td><td>EGP {{ '%.2f'|format(res.price) }}</td><td>{% if res.payment_proof %}<a href="{{ url_for('admin_payment_proof', reservation_id=res.reservation_id) }}">Download proof</a>{% else %}—{% endif %}</td></tr>{% endfor %}
-  </tbody></table></div>{% else %}<p class="text-secondary mb-0">No reservations found for the selected period.</p>{% endif %}
-  </div></div>
+  <p class="text-secondary"><bdi>{{ total }}</bdi> <span data-ar="طلب">orders</span></p>
+  {% if reservations %}<div class="row g-3">{% for res in reservations %}<div class="col-lg-6"><article class="card h-100"><div class="card-body"><div class="d-flex justify-content-between gap-3"><h2 class="h5"><span data-ar="طلب">Order</span> #<bdi>{{ res.reservation_id }}</bdi></h2>{% set reservation=res %}{% include 'customer/_order_status.html' %}</div><p class="mb-1"><strong><span data-ar="{{ res.product_name_ar or res.product_name }}">{{ res.product_name }}</span></strong> · <span data-ar="الكمية">Quantity</span> <bdi>{{ res.quantity }}</bdi></p><p class="mb-1">{{ res.fname }} {{ res.lname }} · <bdi>{{ res.phone }}</bdi></p><p class="small text-secondary mb-2"><span data-ar="الاستلام">Collection</span>: <bdi>{{ res.pickup_date|date_display }}</bdi> · <span data-ar="ج.م">EGP</span> <bdi>{{ '%.2f'|format(res.price) }}</bdi></p><p class="small mb-3"><span data-ar="الدفع">Payment</span>: <strong data-ar="{{ lookup(payment_labels,res.payment_status,[res.payment_status,res.payment_status])[1] }}">{{ lookup(payment_labels,res.payment_status,[res.payment_status,res.payment_status])[0] }}</strong></p><a href="/admin/orders/{{ res.reservation_id }}" class="btn btn-outline-primary btn-sm" data-ar="عرض وإدارة الطلب">View and manage order</a></div></article></div>{% endfor %}</div>{% else %}<div class="card card-body text-secondary" data-ar="لا توجد طلبات مطابقة.">No orders match these filters.</div>{% endif %}
+  <nav class="d-flex gap-2 mt-4">{% if previous_page %}<a class="btn btn-outline-primary" href="{{ previous_page }}" data-ar="السابق">Previous</a>{% endif %}<span class="align-self-center"><span data-ar="صفحة">Page</span> <bdi>{{ current_page }}</bdi></span>{% if next_page %}<a class="btn btn-outline-primary" href="{{ next_page }}" data-ar="التالي">Next</a>{% endif %}</nav>
 </div>
 {% endblock %}

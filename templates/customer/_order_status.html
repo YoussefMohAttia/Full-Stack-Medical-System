@@ -1,0 +1,6 @@
+﻿{% set display_status = reservation.status %}
+{% if reservation.status == 'active' and reservation.payment_method == 'instapay' %}
+  {% if reservation.payment_status == 'pending_verification' %}{% set display_status = 'pending_verification' %}
+  {% elif reservation.payment_status == 'rejected' %}{% set display_status = 'rejected' %}{% endif %}
+{% endif %}
+<span class="badge {% if display_status == 'active' %}text-bg-success{% elif display_status == 'pending_verification' %}text-bg-warning text-dark{% elif display_status == 'rejected' %}text-bg-danger{% else %}text-bg-secondary{% endif %}"><span data-ar="{{ lookup(order_labels,display_status,[display_status,display_status])[1] }}">{{ lookup(order_labels,display_status,[display_status,display_status])[0] }}</span></span>

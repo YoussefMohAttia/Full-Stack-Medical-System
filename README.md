@@ -1,35 +1,20 @@
-# XPharma
+﻿# XPharma
 
-XPharma is a bilingual Flask website for browsing skincare products and reserving them for collection. Customers can create an account, verify their email, view product details, choose a quantity and pay by cash on collection or submit an InstaPay transfer screenshot for manual review.
-
-The site includes English and Arabic, light and dark themes, and layouts for desktop and mobile. Administrators can add products, view reservations, and download payment proofs after signing in.
+A bilingual, responsive website built with TypeScript and Express on Cloudflare Workers. Customers can browse products, verify their email, reserve quantities, pay cash on collection or upload an InstaPay proof. Administrators can review reservations and download proofs from private R2 storage.
 
 ## Run locally
 
-Install Python 3.10 or newer and the dependencies:
+Requirements: a current Node.js LTS release and npm. In PowerShell, use `npm.cmd` if script execution policies block `npm`.
 
-```powershell
-python -m pip install -r requirements.txt
-$env:DB_ENGINE = 'sqlite'
-$env:SQLITE_DATABASE = 'data\xpharma_local.db'
-python app.py
-```
+1. Run `npm ci`.
+2. Copy `.dev.vars.example` to `.dev.vars` and set a unique random `SESSION_SECRET` of at least 32 characters. Configure Gmail or Resend settings for real email delivery.
+3. Run `npm run db:local` to create the local D1 schema.
+4. Run `npm run dev:cloudflare` and open the local URL printed by Wrangler.
 
-Open `http://127.0.0.1:5000`. The SQLite database is created on first use. Existing XPharma databases from earlier versions are backed up and migrated automatically; customer accounts and reservations are retained.
+Local D1 and R2 use separate files under `.wrangler/`. The database starts with a product catalogue and no administrator. See [Cloudflare setup](cloudflare/README.md) to create an admin and configure email and deployment.
 
-Email delivery requires a configured SMTP account or Resend API. Keep credentials in a local `.env` file and never commit that file. The site cannot send verification or notification emails without a working provider. InstaPay screenshots are reviewed by the team; an upload does not confirm payment.
+The website pages are in `templates/`, and the product information is in `cloudflare/data/product-info.json`. After changing a template, run `npm run templates` to regenerate the compiled output.
 
-## Production
+## Testing
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for production configuration, private file storage, admin setup, backups, and pre-launch checks. A local development server, default demo admin credentials, and ephemeral storage must not be used for real customers.
-
-## Main files
-
-- `app.py` — routes and web security configuration.
-- `backend.py` — database, accounts and reservations.
-- `notifications.py` — email delivery and order notifications.
-- `product_info.py` — bilingual product information.
-- `templates/` and `static/` — pages, styling, company images and product materials.
-- `create_admin.py` — interactive creation of a production administrator.
-
-The Flask application and product assets are maintained separately from its previous prototype. The migration code retains only the compatibility needed to safely upgrade existing local databases.
+Run `npm run typecheck` and `npm run test:smtp`. The Cloudflare guide explains how to run the end-to-end and browser tests. Test real email delivery and a staging deployment before launch.

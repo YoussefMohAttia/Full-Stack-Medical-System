@@ -1,9 +1,10 @@
 *.docx
 *.puml
-__pycache__/
-*.py[cod]
 .env
 .env.*
-!.env.example
 data/
 static/uploads/payment_proofs/
+node_modules/
+.wrangler/
+.dev.vars
+*.migration.sql

@@ -1,12 +1,18 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% block title %}Admin dashboard | XPharma{% endblock %}
 {% block content %}
-<div class="container py-5"><h1 class="display-font h2 mb-4">XPharma Admin Dashboard</h1>
+<div class="container py-5">
+  <p class="section-kicker" data-ar="لوحة الإدارة">Administration</p>{% if account_name %}<p class="fw-semibold"><bdi dir="auto" data-account-name>{{ account_name }}</bdi></p>{% endif %}
+  <h1 class="display-font h2 mb-2" data-ar="لوحة إدارة إكس فارما">XPharma Admin Dashboard</h1>
+  <p class="text-secondary mb-4" data-ar="تابع الطلبات والمدفوعات والمنتجات من مكان واحد.">Keep track of orders, payments and products in one place.</p>
   <div class="row g-3 mb-4">
-    <div class="col-sm-4"><div class="card h-100"><div class="card-body"><p class="text-secondary">Listed Medicines</p><p class="h2 mb-0">{{ stats.total_products or 0 }}</p></div></div></div>
-    <div class="col-sm-4"><div class="card h-100"><div class="card-body"><p class="text-secondary">Available Items</p><p class="h2 mb-0">{{ stats.active_products or 0 }}</p></div></div></div>
-    <div class="col-sm-4"><div class="card h-100"><div class="card-body"><p class="text-secondary">Active Reservations</p><p class="h2 mb-0">{{ stats.active_reservations or 0 }}</p></div></div></div>
+    <div class="col-6 col-lg"><a href="/admin/reports?payment=pending_verification" class="card h-100 text-decoration-none"><div class="card-body"><p class="text-secondary" data-ar="مدفوعات بانتظار التحقق">Payments to review</p><p class="h2 mb-0"><bdi>{{ stats.pending_payments or 0 }}</bdi></p></div></a></div>
+    <div class="col-6 col-lg"><a href="/admin/reports?status=active" class="card h-100 text-decoration-none"><div class="card-body"><p class="text-secondary" data-ar="الطلبات النشطة">Active orders</p><p class="h2 mb-0"><bdi>{{ stats.active_reservations or 0 }}</bdi></p></div></a></div>
+    <div class="col-6 col-lg"><div class="card h-100"><div class="card-body"><p class="text-secondary" data-ar="الاستلام اليوم">Due today</p><p class="h2 mb-0"><bdi>{{ stats.due_today or 0 }}</bdi></p></div></div></div>
+    <div class="col-6 col-lg"><a href="/admin/products" class="card h-100 text-decoration-none"><div class="card-body"><p class="text-secondary" data-ar="المنتجات النشطة">Active products</p><p class="h2 mb-0"><bdi>{{ stats.active_products or 0 }}</bdi></p></div></a></div>
   </div>
-  <div class="d-flex flex-wrap gap-3"><a href="{{ url_for('add_product') }}" class="btn btn-primary">Add Medicine</a><a href="{{ url_for('view_reports') }}" class="btn btn-outline-primary">View Reports</a></div>
+  <div class="d-flex flex-wrap gap-2 mb-5"><a href="/admin/reports" class="btn btn-primary" data-ar="إدارة الطلبات">Manage orders</a><a href="/admin/products" class="btn btn-outline-primary" data-ar="إدارة المنتجات">Manage products</a><a href="/admin/products/add" class="btn btn-outline-primary" data-ar="إضافة منتج">Add product</a><a href="/admin/customers" class="btn btn-outline-primary" data-ar="العملاء">Customers</a><a href="/admin/account" class="btn btn-outline-primary" data-ar="كلمة مرور الإدارة">Admin password</a></div>
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-3"><h2 class="h4 mb-0" data-ar="أحدث الطلبات">Recent orders</h2><a href="/admin/reports" data-ar="عرض كل الطلبات">View all orders</a></div>
+  {% if recent %}<div class="row g-3">{% for order in recent %}<div class="col-md-6 col-xl-4"><a href="/admin/orders/{{ order.reservation_id }}" class="card h-100 text-decoration-none"><div class="card-body"><div class="d-flex justify-content-between gap-2"><strong><span data-ar="طلب">Order</span> #<bdi>{{ order.reservation_id }}</bdi></strong>{% set reservation=order %}{% include 'customer/_order_status.html' %}</div><p class="mb-1 mt-3"><span data-ar="{{ order.product_name_ar or order.product_name }}">{{ order.product_name }}</span></p><p class="small text-secondary mb-1">{{ order.fname }} {{ order.lname }}</p><small data-ar="{{ lookup(payment_labels, order.payment_status, [order.payment_status,order.payment_status])[1] }}">{{ lookup(payment_labels, order.payment_status, [order.payment_status,order.payment_status])[0] }}</small></div></a></div>{% endfor %}</div>{% else %}<div class="card card-body text-secondary" data-ar="لا توجد طلبات حتى الآن.">No orders yet.</div>{% endif %}
 </div>
 {% endblock %}

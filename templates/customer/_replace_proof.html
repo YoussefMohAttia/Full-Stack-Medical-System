@@ -1,0 +1,8 @@
+﻿{% if reservation.status=='active' and reservation.payment_method=='instapay' and reservation.payment_status=='rejected' %}
+<form method="post" enctype="multipart/form-data" action="/customer/reservation/{{ reservation.reservation_id }}/payment-proof" class="mt-3">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <label for="proof-{{ reservation.reservation_id }}-{{ proof_suffix }}" class="form-label small" data-ar="ارفع صورة جديدة لإثبات الدفع">Upload a new payment screenshot</label>
+  <input id="proof-{{ reservation.reservation_id }}-{{ proof_suffix }}" type="file" name="payment_proof" class="form-control form-control-sm mb-2" accept="image/png,image/jpeg,image/webp" required>
+  <button class="btn btn-outline-primary btn-sm" data-ar="إرسال للمراجعة">Submit for review</button>
+</form>
+{% endif %}

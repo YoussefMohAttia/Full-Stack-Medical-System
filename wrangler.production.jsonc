@@ -1,0 +1,50 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "xpharma",
+  "main": "cloudflare/src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": [
+    "enable_nodejs_http_server_modules"
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "xpharma-production",
+      "database_id": "51cde003-52dc-4bc3-82af-01522ee66f23",
+      "migrations_dir": "cloudflare/migrations"
+    }
+  ],
+  "assets": {
+    "directory": "./static",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "r2_buckets": [
+    {
+      "binding": "PROOFS",
+      "bucket_name": "xpharma-production-private"
+    }
+  ],
+  "vars": {
+    "APP_ENV": "production",
+    "NOTIFICATION_EMAIL": "Xpharma25@gmail.com",
+    "INSTAPAY_ACCOUNT": "youssefmohamed2531@instapay"
+  },
+  "triggers": {
+    "crons": [
+      "0 * * * *"
+    ]
+  },
+  "routes": [
+    {
+      "pattern": "xpharma-eg.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.xpharma-eg.com",
+      "custom_domain": true
+    }
+  ],
+  "workers_dev": true,
+  "preview_urls": false
+}

@@ -1,0 +1,12 @@
+﻿# Copy to .dev.vars for local Cloudflare development only; do not commit secrets.
+SESSION_SECRET=replace-with-at-least-32-random-characters
+APP_ENV=development
+# Choose gmail to send through the XPharma Gmail account.
+MAIL_PROVIDER=gmail
+SMTP_USERNAME=
+SMTP_PASSWORD=
+SMTP_FROM=
+RESEND_API_KEY=
+RESEND_FROM=
+NOTIFICATION_EMAIL=Xpharma25@gmail.com
+INSTAPAY_ACCOUNT=youssefmohamed2531@instapay

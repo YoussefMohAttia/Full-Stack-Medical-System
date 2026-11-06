@@ -1,38 +1,5 @@
-{% extends "base.html" %}
+﻿{% extends 'base.html' %}
+{% block title %}Add product | XPharma{% endblock %}
 {% block content %}
-<div class="container">
-    <h2>Add Medicine to Catalogue</h2>
-    <form method="POST" onsubmit="return validateForm()">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-        <div class="form-group">
-            <label>Reference ID</label>
-            <input type="text" name="product_id" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label>Medicine name</label>
-            <input type="text" name="product_name" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label>Pack size / strength</label>
-            <input type="number" name="pack_size" class="form-control" min="1" max="100000" required>
-            <small class="text-muted">Use a whole-number pack size or strength reference.</small>
-        </div>
-        <div class="form-group">
-            <label>Listed price</label>
-            <input type="number" step="0.01" name="unit_price" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Medicine</button>
-    </form>
-</div>
-
-<script>
-function validateForm() {
-    const pack_size = document.querySelector('input[name="pack_size"]').value;
-    if (pack_size < 1 || pack_size > 100000) {
-        alert('Please enter a valid pack size between 1 and 100000');
-        return false;
-    }
-    return true;
-}
-</script>
+<div class="container py-5"><div class="row justify-content-center"><div class="col-lg-7"><a href="/admin/products" data-ar="العودة إلى المنتجات">← Back to products</a><h1 class="display-font h2 my-4" data-ar="إضافة منتج">Add product</h1><form method="post" enctype="multipart/form-data" class="card card-body p-4"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><div class="mb-3"><label class="form-label" for="product_id" data-ar="مرجع المنتج">Product reference</label><input id="product_id" name="product_id" class="form-control" maxlength="50" pattern="[A-Za-z0-9_-]+" required></div><div class="mb-3"><label class="form-label" for="product_name" data-ar="اسم المنتج بالإنجليزية">Product name in English</label><input id="product_name" name="product_name" class="form-control" maxlength="200" required></div><div class="mb-3"><label class="form-label" for="product_name_ar" data-ar="اسم المنتج بالعربية">Product name in Arabic</label><input id="product_name_ar" name="product_name_ar" class="form-control" maxlength="200" dir="auto"></div><div class="row g-3 mb-4"><div class="col-md-6"><label class="form-label" for="pack_size" data-ar="حجم العبوة">Pack size</label><input id="pack_size" name="pack_size" type="number" min="1" max="100000" class="form-control" required></div><div class="col-md-6"><label class="form-label" for="unit_price" data-ar="السعر بالجنيه">Price in EGP</label><input id="unit_price" name="unit_price" type="number" min="0" max="1000000" step="0.01" class="form-control" required></div></div>{% include 'admin/_product_content_fields.html' %}<button class="btn btn-primary" data-ar="إضافة منتج">Add product</button></form></div></div></div>
 {% endblock %}

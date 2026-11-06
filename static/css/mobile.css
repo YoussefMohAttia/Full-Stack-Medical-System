@@ -3,6 +3,12 @@ body.dark .payment-option { border-color: #456373; }
 body.dark .payment-option:has(input:checked) { background: #173c48; border-color: #80d8cd; }
 body.dark .payment-option span { color: #b7c9d0; }
 body.dark .instapay-account { color: #80d8cd; }
+.password-field { position: relative; }
+.password-field .form-control { padding-inline-end: 3rem; }
+.password-toggle { position: absolute; inset-inline-end: .35rem; top: 50%; transform: translateY(-50%); width: 2.35rem; height: 2.35rem; display: grid; place-items: center; border: 0; border-radius: .5rem; background: transparent; color: #527181; }
+.password-toggle:hover, .password-toggle:focus-visible { background: #eaf7f2; color: var(--teal); outline: 0; }
+body.dark .password-toggle { color: #b7c9d0; }
+body.dark .password-toggle:hover, body.dark .password-toggle:focus-visible { background: #1c3c4a; color: #80d8cd; }
 
 @media (max-width: 991.98px) {
   .navbar > .container { flex-wrap: wrap; }
@@ -20,6 +26,7 @@ body.dark .instapay-account { color: #80d8cd; }
 @media (max-width: 767.98px) {
   .page-wrap { padding-top: 68px; }
   .hero { padding: 3rem 0 2.5rem !important; }
+  .hero .row.g-5 { --bs-gutter-x: 1.5rem; }
   .hero h1, .about-hero h1 { font-size: clamp(2.25rem, 9vw, 3.2rem); }
   .hero-card { padding: 1.6rem !important; border-radius: 20px !important; }
   .hero-icon { margin-bottom: 1rem !important; }
@@ -69,4 +76,24 @@ body.dark .instapay-account { color: #80d8cd; }
   .product-actions { font-size: .78rem; }
   .product-actions a { padding-inline: .3rem; }
   .modal-dialog { margin: .4rem; }
+}
+
+/* Give contact details enough room on phones and center them in the footer. */
+@media (max-width: 767.98px) {
+  .footer-contact { text-align: center; }
+  .footer-contact p { white-space: nowrap; }
+}
+
+/* Keep page links and account controls in separate groups in both directions. */
+@media (min-width: 992px) {
+  .xpharma-nav { gap: 1rem; }
+  .nav-controls { margin-inline-start: auto; gap: .75rem; }
+}
+.nav-utilities { display: flex; align-items: center; gap: .5rem; }
+.nav-account { display: flex; align-items: center; gap: .45rem; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.nav-account i { color: var(--teal); }
+@media (max-width: 991.98px) {
+  .nav-controls { border-top: 1px solid #d6e0e5; margin-top: .35rem; padding-top: .8rem; gap: .6rem; }
+  .nav-account { padding: .35rem; }
+  body.dark .nav-controls { border-color: #31505f; }
 }

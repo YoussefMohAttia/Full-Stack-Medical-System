@@ -7,13 +7,13 @@
                 <div class="card-body">
                     <p class="section-kicker text-center">Welcome back</p>
                     <h2 class="display-font text-center mb-4">Sign in to XPharma</h2>
-                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% set messages = get_flashed_messages() %}
                         {% if messages %}
-                            {% for category, message in messages %}
+                            {% for __pair in messages %}{% set category = __pair[0] %}{% set message = __pair[1] %}
                                 <div class="alert alert-{{ category }}">{{ message }}</div>
                             {% endfor %}
                         {% endif %}
-                    {% endwith %}
+                    
                     <form method="POST">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                         <div class="form-group mb-3">

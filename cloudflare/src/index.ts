@@ -5,6 +5,7 @@ import { sessions } from './session';
 import { page, routes } from './auth';
 import orders from './orders';
 import admin from './admin';
+import assistant from './assistant';
 import { productInfo } from './views';
 const database=(env as unknown as {DB:D1Database}).DB;
 const app=express();app.disable('x-powered-by');
@@ -17,7 +18,7 @@ app.use(sessions);
 // Customer sessions cannot browse the separate admin interface. Signed-out
 // administrators can still reach their login, which requires admin credentials.
 app.use('/admin',(_req,res,next)=>{if(res.locals.session.customer&&!res.locals.session.admin){res.status(404).send('Not found');return;}next();});
-app.use(routes);app.use(orders);app.use(admin);
+app.use(routes);app.use(assistant);app.use(orders);app.use(admin);
 app.get(['/','/customer/search'],async(req,res,next)=>{try{const name=String(req.query.product_name||'').slice(0,100),price=Number(req.query.max_price||0);const rows=await database.prepare("SELECT * FROM products WHERE status='active' AND (LOWER(product_name) LIKE LOWER(?) OR product_name_ar LIKE ?) AND (? <= 0 OR unit_price <= ?) ORDER BY product_id").bind(`%${name}%`,`%${name}%`,price,price).all<{product_id:string}>();const product_info=Object.fromEntries(rows.results.map(p=>[p.product_id,productInfo(p)]));await page(req,res,req.path==='/'?'index.html':'customer/search.html',{products:rows.results,product_info});}catch(e){next(e);}});
 app.get('/about',(req,res,next)=>{page(req,res,'about.html').catch(next);});
 app.get('/customer/products/:id',async(req,res,next)=>{try{const product=await database.prepare("SELECT * FROM products WHERE product_id=? AND status='active'").bind(req.params.id).first<{product_id:string}>();if(!product){res.status(404).send('Product not found');return;}await page(req,res,'customer/product_detail.html',{product,info:productInfo(product)});}catch(e){next(e);}});
@@ -32,6 +33,7 @@ export default {
     context.waitUntil(bindings.DB.batch([
       bindings.DB.prepare('DELETE FROM web_sessions WHERE expires_at < ?').bind(now),
       bindings.DB.prepare('DELETE FROM security_attempts WHERE window_start < ?').bind(Math.floor(now/1000)-86400),
+      bindings.DB.prepare('DELETE FROM assistant_rate_limits WHERE window_start < ? AND blocked_until < ?').bind(Math.floor(now/1000)-86400,Math.floor(now/1000)),
       bindings.DB.prepare('DELETE FROM verification_codes WHERE CAST(expires_at AS INTEGER) < ?').bind(now-86400000)
     ]));
   }

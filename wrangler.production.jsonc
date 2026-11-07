@@ -28,7 +28,7 @@
   "vars": {
     "APP_ENV": "production",
     "NOTIFICATION_EMAIL": "Xpharma25@gmail.com",
-    "INSTAPAY_ACCOUNT": "youssefmohamed2531@instapay"
+    "INSTAPAY_ACCOUNT": "mohamed.araby71@instapay"
   },
   "triggers": {
     "crons": [

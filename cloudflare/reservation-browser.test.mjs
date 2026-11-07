@@ -1,7 +1,7 @@
 ﻿import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
-import {readdirSync} from 'node:fs';
+import {readdirSync,readFileSync} from 'node:fs';
 import {chromium} from 'playwright';
 import bcrypt from 'bcryptjs';
 const base=process.env.XPHARMA_TEST_URL||'http://127.0.0.1:8792';
@@ -26,8 +26,10 @@ test('reservation page translates, updates totals and preserves the InstaPay add
    assert.match(await page.locator('.safety-note').innerText(),/تراجع إكس فارما/);
    await page.locator('#quantity').fill('2');
    assert.match((await page.locator('#orderTotalAmount').innerText()).replace(/[\u200e\u200f]/g,''),/١٩٠/);
-   for(const handle of await page.locator('[data-preserve-ltr]').allTextContents())assert.equal(handle.trim(),'youssefmohamed2531@instapay');
+   for(const handle of await page.locator('[data-preserve-ltr]').allTextContents())assert.equal(handle.trim(),'mohamed.araby71@instapay');
    await page.locator('#instapay').check();await page.locator('#instapayModal.show').waitFor();
+   const qr=page.locator('#instapayModal .instapay-qr');assert.equal(await qr.getAttribute('src'),'/static/images/payments/instapay-mohamed-araby.jpeg');
+   const qrResponse=await page.request.get(base+await qr.getAttribute('src'));assert.equal(qrResponse.status(),200);assert.deepEqual(await qrResponse.body(),readFileSync('Info/Pictures/Instapay.jpeg'));
    assert.match(await page.locator('#instapayModal h2').innerText(),/أكمل التحويل/);
    assert.match((await page.locator('#modalTotalAmount').innerText()).replace(/[\u200e\u200f]/g,''),/١٩٠/);
    assert.equal(await page.locator('#instapayModal .btn-close').getAttribute('aria-label'),'إغلاق');
@@ -38,7 +40,7 @@ test('reservation page translates, updates totals and preserves the InstaPay add
    assert.match(await page.title(),/Order Bronex Massage Gel/);
    assert.equal((await page.locator('#orderTotalAmount').innerText()).trim(),'190.00');
    assert.equal(await page.locator('#instapayModal .btn-close').getAttribute('aria-label'),'Close');
-   for(const handle of await page.locator('[data-preserve-ltr]').allTextContents())assert.equal(handle.trim(),'youssefmohamed2531@instapay');
+   for(const handle of await page.locator('[data-preserve-ltr]').allTextContents())assert.equal(handle.trim(),'mohamed.araby71@instapay');
    assert.deepEqual(errors,[]);await context.close();
   }
  }finally{if(browser)await browser.close();if(customerId)db.prepare('DELETE FROM customers WHERE SSN=?').run(customerId);}

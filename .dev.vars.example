@@ -8,5 +8,8 @@ SMTP_PASSWORD=
 SMTP_FROM=
 RESEND_API_KEY=
 RESEND_FROM=
-NOTIFICATION_EMAIL=Xpharma25@gmail.com
-INSTAPAY_ACCOUNT=youssefmohamed2531@instapay
+NOTIFICATION_EMAIL=
+INSTAPAY_ACCOUNT=
+# Optional local home-page assistant. Never commit your actual Gemini key.
+GEMINI_API_KEY=
+GEMINI_MODEL=gemini-3.5-flash-lite

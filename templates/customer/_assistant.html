@@ -1,0 +1,22 @@
+<div class="xp-assistant" id="xpAssistant">
+  <section class="xp-chat" id="xpChat" aria-labelledby="xpChatTitle" hidden>
+    <header class="xp-chat-header">
+      <span class="xp-robot xp-robot-small" aria-hidden="true"><span class="xp-robot-face"><i></i><i></i></span></span>
+      <div><h2 id="xpChatTitle" data-ar="مساعد إكس فارما">XPharma assistant</h2><p data-ar="معلومات عن منتجاتنا والموقع">Here to help with our products and site</p></div>
+      <button type="button" id="xpChatClose" class="xp-chat-close" aria-label="Close assistant" data-ar-aria-label="إغلاق المساعد"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </header>
+    <div class="xp-chat-body">
+      <div class="xp-chat-message xp-chat-welcome" data-ar="أهلاً! اسألني عن إكس فارما، منتجاتنا أو كيفية الطلب.">Hello! Ask me about XPharma, our products or how to order.</div>
+      <p class="xp-chat-note" data-ar="مساعد يعمل بالذكاء الاصطناعي، وليس بديلاً عن الصيدلي. تجنب مشاركة المعلومات الشخصية أو الصحية.">AI assistant, not a substitute for a pharmacist. Avoid sharing personal or health details.</p>
+      <div class="xp-chat-suggestions" aria-label="Suggested questions" data-ar-aria-label="أسئلة مقترحة">
+        <button type="button" data-question-en="How do I order products?" data-question-ar="كيف أطلب المنتجات؟" data-ar="كيف أطلب؟">How do I order?</button>
+        <button type="button" data-question-en="What is Blemease?" data-question-ar="ما هو بليمييز؟" data-ar="ما هو بليمييز؟">What is Blemease?</button>
+      </div>
+      <div id="xpChatMessages" class="xp-chat-messages" aria-live="polite" data-preserve-ltr></div>
+    </div>
+    <form id="xpChatForm" class="xp-chat-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label class="visually-hidden" for="xpChatInput" data-ar="رسالتك">Your message</label><input id="xpChatInput" type="text" maxlength="600" autocomplete="off" placeholder="Ask a question..." data-chat-placeholder required><button type="submit" id="xpChatSend" aria-label="Send message" data-ar-aria-label="إرسال الرسالة"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button></form>
+  </section>
+  <button type="button" class="xp-chat-launch" id="xpChatLaunch" aria-expanded="false" aria-controls="xpChat" aria-label="Open XPharma assistant" data-ar-aria-label="افتح مساعد إكس فارما"><span class="xp-robot" aria-hidden="true"><span class="xp-robot-face"><i></i><i></i></span></span><span class="xp-launch-text" data-ar="اسأل إكس فارما">Ask XPharma</span><span class="xp-launch-status" aria-hidden="true"></span></button>
+</div>
+<link rel="stylesheet" href="{{ url_for('static', 'css/assistant.css') }}">
+<script defer src="{{ url_for('static', 'js/assistant.js') }}"></script>

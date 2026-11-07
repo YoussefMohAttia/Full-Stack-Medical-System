@@ -20,7 +20,8 @@ export async function page(req: express.Request, res: express.Response, name: st
     accountName = account ? [account.fname, account.lname].filter(Boolean).join(' ').trim() : '';
   }
   await setSession(res, session);
-  res.send(render(name, { ...data, account_name:accountName, csrf_token: session.csrf, session:{customer_ssn:session.customer,admin:session.admin}, request:{ args:req.query, form:req.body || {} }, get_flashed_messages:() => messages }));
+  const assistantVisible=['/','/about','/customer/search'].includes(req.path)||/^\/customer\/products\/[^/]+\/?$/.test(req.path);
+  res.send(render(name, { ...data, assistant_visible:assistantVisible, account_name:accountName, csrf_token: session.csrf, session:{customer_ssn:session.customer,admin:session.admin}, request:{ path:req.path, args:req.query, form:req.body || {} }, get_flashed_messages:() => messages }));
 }
 const form = express.urlencoded({extended:false, limit:'20kb'});
 routes.use(form);

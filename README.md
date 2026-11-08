@@ -106,7 +106,7 @@ The assistant sends questions and product information to Google, without chat hi
 ## Project Structure
 
 ```text
-Full-Stack-Medical-System/
+XPharma-FullStack-Pharmacy-Platform/
 |-- cloudflare/
 |   |-- src/                 # Routes, authentication, orders, email, and assistant
 |   |-- migrations/          # D1 schema migrations
@@ -134,8 +134,8 @@ Full-Stack-Medical-System/
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/YoussefMohAttia/Full-Stack-Medical-System.git
-cd Full-Stack-Medical-System
+git clone https://github.com/YoussefMohAttia/XPharma-FullStack-Pharmacy-Platform.git
+cd XPharma-FullStack-Pharmacy-Platform
 npm ci
 ```
 

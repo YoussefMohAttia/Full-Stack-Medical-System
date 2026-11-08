@@ -18,7 +18,7 @@
   try{
    const response=await fetch('/api/assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({csrf_token:form.elements.csrf_token.value,message:question,language:lang})});
    const result=await response.json();
-   if(!response.ok){const errors={not_configured:['The assistant is not ready yet. Please contact XPharma.','المساعد غير متاح حالياً. يرجى التواصل مع إكس فارما.'],rate_limited:['Too many messages. Please wait up to one minute and try again.','رسائل كثيرة. يرجى الانتظار لمدة تصل إلى دقيقة ثم المحاولة مجدداً.']};const wording=errors[result.error]||['Sorry, the assistant is unavailable right now.','عذراً، المساعد غير متاح حالياً.'];waiting.textContent=wording[lang==='ar'?1:0]+contact(lang)}
+   if(!response.ok){const errors={off_topic_locked:['The assistant is paused after three unrelated questions. Please try again in one minute.','تم إيقاف المساعد بعد ثلاثة أسئلة خارج النطاق. يرجى المحاولة مجدداً بعد دقيقة.'],not_configured:['The assistant is not ready yet. Please contact XPharma.','المساعد غير متاح حالياً. يرجى التواصل مع إكس فارما.'],rate_limited:['Too many messages. Please wait up to one minute and try again.','رسائل كثيرة. يرجى الانتظار لمدة تصل إلى دقيقة ثم المحاولة مجدداً.']};const wording=errors[result.error]||['Sorry, the assistant is unavailable right now.','عذراً، المساعد غير متاح حالياً.'];waiting.textContent=wording[lang==='ar'?1:0]+contact(lang)}
    else waiting.textContent=result.reply;
   }catch{waiting.textContent=(lang==='ar'?'تعذر الاتصال بالمساعد. حاول مجدداً.':'Could not reach the assistant. Please try again.')+contact(lang)}
   finally{send.disabled=false;body.scrollTop=body.scrollHeight}

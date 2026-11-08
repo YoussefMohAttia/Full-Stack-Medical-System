@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS assistant_scope_limits (bucket TEXT PRIMARY KEY, consecutive INTEGER NOT NULL DEFAULT 0, blocked_until INTEGER NOT NULL DEFAULT 0);

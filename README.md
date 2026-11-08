@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="static/images/brand/xpharma-logo.png" alt="XPharma logo" width="180" />
+
 # XPharma: Full-Stack Medical Product Platform
 
 **A bilingual web application for exploring XPharma products, reserving orders, and managing payments and customer activity.**
@@ -9,8 +11,6 @@
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare_Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
 [![Cloudflare D1](https://img.shields.io/badge/Cloudflare_D1-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
 [![Cloudflare R2](https://img.shields.io/badge/Cloudflare_R2-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/r2/)
-
-[Visit XPharma](https://xpharma-eg.com)
 
 </div>
 
@@ -117,7 +117,6 @@ Full-Stack-Medical-System/
 |-- .dev.vars.example        # Local configuration template
 |-- wrangler.jsonc           # Local Worker configuration
 |-- wrangler.production.jsonc # Production Worker configuration
-|-- DEPLOYMENT.md            # Production deployment notes
 `-- package.json             # Dependencies and scripts
 ```
 
@@ -179,7 +178,9 @@ After changing files in `templates/`, regenerate the compiled templates with `np
 
 ## Deployment
 
-The production configuration uses Cloudflare Workers, D1, and a private R2 bucket. Provision resources, apply migrations, configure Worker secrets, and verify email delivery before serving customers. See [Cloudflare setup](cloudflare/README.md#cloudflare-resources) for resource and secret configuration and [DEPLOYMENT.md](DEPLOYMENT.md) for this project's production deployment notes.
+The production configuration uses Cloudflare Workers, D1, and a private R2 bucket. Provision resources, apply migrations, configure Worker secrets, and verify email delivery before serving customers. See [Cloudflare setup](cloudflare/README.md#cloudflare-resources) for resource and secret configuration.
+
+Run `npm ci`, `npm run templates`, `npm run typecheck`, and `npm run test:smtp` before deploying. Deploy with `npx wrangler deploy --config wrangler.production.jsonc` after configuring the production resources and secrets. Keep the R2 bucket private and never run the test suite against the production database.
 
 ---
 

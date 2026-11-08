@@ -6,6 +6,8 @@
 
 **A bilingual web application for exploring XPharma products, reserving orders, and managing payments and customer activity.**
 
+[![Visit XPharma](https://img.shields.io/badge/Visit_Live_Website-XPharma-087F8C?style=for-the-badge&logo=googlechrome&logoColor=white)](https://xpharma-eg.com)
+
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare_Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
